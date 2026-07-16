@@ -8,13 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Impact&display=swap');
-        .meme-text {
-            font-family: Impact, Arial Black, sans-serif;
-            text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-            color: white;
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
     </style>
 </head>
 <body class="bg-black text-lime-400 font-mono">
@@ -42,10 +35,10 @@
     <div id="gallery" class="max-w-7xl mx-auto px-6 py-12 bg-zinc-950">
         <h2 class="text-4xl font-bold text-center mb-10 text-white">Gallery</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <img src="Ack1.png" class="rounded-3xl" alt="Ackchyually">
-            <img src="Ack2.jpeg" class="rounded-3xl" alt="Ackchyually">
-            <img src="Ack3.jpeg" class="rounded-3xl" alt="Ackchyually">
-            <img src="Ack4.jpeg" class="rounded-3xl" alt="Ackchyually">
+            <img src="Ack1.png" class="rounded-3xl" alt="">
+            <img src="Ack2.jpeg" class="rounded-3xl" alt="">
+            <img src="Ack3.jpeg" class="rounded-3xl" alt="">
+            <img src="Ack4.jpeg" class="rounded-3xl" alt="">
         </div>
     </div>
 
@@ -80,7 +73,7 @@
             </div>
 
             <div class="md:col-span-3">
-                <canvas id="meme-canvas" width="600" height="600" class="w-full rounded-3xl border border-lime-600"></canvas>
+                <canvas id="meme-canvas" width="600" height="600" class="w-full rounded-3xl border border-lime-600 bg-black"></canvas>
             </div>
         </div>
     </div>
@@ -102,13 +95,12 @@
         function renderTemplates() {
             const container = document.getElementById('templates');
             container.innerHTML = '';
-            templates.forEach(t => {
+            templates.forEach((t, index) => {
                 const div = document.createElement('div');
                 div.className = "cursor-pointer border border-lime-600 hover:border-lime-400 rounded-2xl overflow-hidden";
                 div.innerHTML = `<img src="${t.url}" class="w-full h-32 object-cover">`;
                 div.onclick = () => {
                     currentImage.src = t.url;
-                    currentImage.onload = drawMeme;
                 };
                 container.appendChild(div);
             });
@@ -118,25 +110,33 @@
             const canvas = document.getElementById('meme-canvas');
             const ctx = canvas.getContext('2d');
             
-            if (!currentImage.src) currentImage.src = templates[0].url;
-            
-            currentImage.onload = () => {
+            // Draw image
+            if (currentImage.complete && currentImage.src) {
                 ctx.drawImage(currentImage, 0, 0, 600, 600);
-                
-                const top = document.getElementById('top-text').value.toUpperCase();
-                const bottom = document.getElementById('bottom-text').value.toUpperCase();
-                
-                ctx.textAlign = 'center';
-                ctx.strokeStyle = '#000';
-                ctx.fillStyle = '#fff';
-                ctx.lineWidth = 8;
-                ctx.font = 'bold 48px Impact';
-                
-                ctx.strokeText(top, 300, 90);
-                ctx.fillText(top, 300, 90);
-                ctx.strokeText(bottom, 300, 520);
-                ctx.fillText(bottom, 300, 520);
-            };
+            } else if (templates[0]) {
+                currentImage.src = templates[0].url;
+                currentImage.onload = () => drawMeme();
+                return;
+            }
+
+            // Draw text
+            const top = document.getElementById('top-text').value.toUpperCase();
+            const bottom = document.getElementById('bottom-text').value.toUpperCase();
+
+            ctx.textAlign = 'center';
+            ctx.strokeStyle = '#000000';
+            ctx.fillStyle = '#ffffff';
+            ctx.lineWidth = 8;
+            ctx.lineJoin = 'round';
+            ctx.font = 'bold 48px Impact';
+
+            // Top text
+            ctx.strokeText(top, 300, 90);
+            ctx.fillText(top, 300, 90);
+
+            // Bottom text
+            ctx.strokeText(bottom, 300, 520);
+            ctx.fillText(bottom, 300, 520);
         }
 
         function downloadMeme() {
@@ -147,9 +147,14 @@
             link.click();
         }
 
+        // Auto update every 100ms when typing
+        setInterval(drawMeme, 100);
+
         window.onload = () => {
             renderTemplates();
-            drawMeme();
+            // Load first image
+            currentImage.src = templates[0].url;
+            currentImage.onload = drawMeme;
         };
     </script>
 </body>
