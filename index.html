@@ -10,30 +10,31 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Impact&display=swap');
     </style>
 </head>
-<body class="bg-black text-lime-400 font-mono">
+<body class="bg-[#0a2540] text-white font-mono">
 
-    <nav class="bg-zinc-950 border-b border-lime-500/30 sticky top-0 z-50">
+    <!-- Navbar dengan Logo Baru -->
+    <nav class="bg-[#0f2b4d] border-b border-blue-500/30 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-x-3">
-                <div class="w-10 h-10 bg-lime-500 text-black rounded-full flex items-center justify-center text-2xl">🤓</div>
-                <span class="font-bold text-3xl tracking-tighter">ACKCHYUALLY</span>
+                <img src="Ack1.png" class="w-10 h-10 object-cover rounded-full border-2 border-blue-400" alt="Ackchyually">
+                <span class="font-bold text-3xl tracking-tighter text-blue-300">ACKCHYUALLY</span>
             </div>
             <div class="flex gap-x-8 text-sm">
-                <a href="#gallery" class="hover:text-lime-400">Gallery</a>
-                <a href="#generator" class="hover:text-lime-400">Generator</a>
+                <a href="#gallery" class="hover:text-blue-400">Gallery</a>
+                <a href="#generator" class="hover:text-blue-400">Generator</a>
             </div>
         </div>
     </nav>
 
     <div class="max-w-4xl mx-auto px-6 pt-16 pb-10 text-center">
-        <h1 class="text-5xl md:text-6xl font-bold text-white leading-tight">
+        <h1 class="text-5xl md:text-6xl font-bold leading-tight">
             Have you seen the meme of the nerdy looking dude saying “Akshually…”?
         </h1>
     </div>
 
     <!-- Gallery -->
-    <div id="gallery" class="max-w-7xl mx-auto px-6 py-12 bg-zinc-950">
-        <h2 class="text-4xl font-bold text-center mb-10 text-white">Gallery</h2>
+    <div id="gallery" class="max-w-7xl mx-auto px-6 py-12 bg-[#0f2b4d]">
+        <h2 class="text-4xl font-bold text-center mb-10">Gallery</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <img src="Ack1.png" class="rounded-3xl" alt="">
             <img src="Ack2.jpeg" class="rounded-3xl" alt="">
@@ -44,42 +45,50 @@
 
     <!-- Generator -->
     <div id="generator" class="max-w-5xl mx-auto px-6 py-16">
-        <h2 class="text-4xl font-bold text-center mb-10 text-white">Ackchyually Meme Generator</h2>
+        <h2 class="text-4xl font-bold text-center mb-10">Ackchyually Meme Generator</h2>
         
         <div class="grid md:grid-cols-5 gap-8">
             <div class="md:col-span-2 space-y-6">
                 <div>
-                    <p class="text-lime-300 mb-3">Choose Template</p>
+                    <p class="text-blue-400 mb-3">Choose Template</p>
                     <div class="grid grid-cols-2 gap-4" id="templates"></div>
                 </div>
 
+                <div class="pt-4 border-t border-blue-700">
+                    <label class="cursor-pointer flex items-center justify-center gap-3 bg-[#0f2b4d] hover:bg-[#1a3a5f] border border-blue-600 rounded-2xl py-4">
+                        <i class="fa-solid fa-upload"></i>
+                        <span class="font-medium">Upload Your Own Photo</span>
+                        <input type="file" id="upload" accept="image/*" class="hidden" onchange="uploadImage(event)">
+                    </label>
+                </div>
+
                 <div>
-                    <label class="block text-lime-300 mb-2">Top Text</label>
+                    <label class="block text-blue-400 mb-2">Top Text</label>
                     <input id="top-text" type="text" value="WELL ACKCHYUALLY" 
-                           class="w-full bg-zinc-900 border border-lime-600 rounded-2xl px-5 py-4 text-white" 
+                           class="w-full bg-[#0f2b4d] border border-blue-600 rounded-2xl px-5 py-4 text-white" 
                            oninput="drawMeme()">
                 </div>
                 <div>
-                    <label class="block text-lime-300 mb-2">Bottom Text</label>
+                    <label class="block text-blue-400 mb-2">Bottom Text</label>
                     <input id="bottom-text" type="text" value="IT'S ACTUALLY..." 
-                           class="w-full bg-zinc-900 border border-lime-600 rounded-2xl px-5 py-4 text-white" 
+                           class="w-full bg-[#0f2b4d] border border-blue-600 rounded-2xl px-5 py-4 text-white" 
                            oninput="drawMeme()">
                 </div>
 
                 <button onclick="downloadMeme()" 
-                        class="w-full py-5 bg-lime-500 hover:bg-lime-400 text-black font-bold rounded-3xl">
+                        class="w-full py-5 bg-blue-500 hover:bg-blue-400 text-black font-bold rounded-3xl">
                     DOWNLOAD MEME
                 </button>
             </div>
 
             <div class="md:col-span-3">
-                <canvas id="meme-canvas" width="600" height="600" class="w-full rounded-3xl border border-lime-600 bg-black"></canvas>
+                <canvas id="meme-canvas" width="600" height="600" class="w-full rounded-3xl border border-blue-600"></canvas>
             </div>
         </div>
     </div>
 
-    <footer class="text-center py-8 text-lime-500/60 text-sm">
-        Ackchyually... made with Grok
+    <footer class="text-center py-8 text-blue-400/60 text-sm">
+        Ackchyually Make Great Again
     </footer>
 
     <script>
@@ -95,46 +104,46 @@
         function renderTemplates() {
             const container = document.getElementById('templates');
             container.innerHTML = '';
-            templates.forEach((t, index) => {
+            templates.forEach(t => {
                 const div = document.createElement('div');
-                div.className = "cursor-pointer border border-lime-600 hover:border-lime-400 rounded-2xl overflow-hidden";
+                div.className = "cursor-pointer border border-blue-600 hover:border-blue-400 rounded-2xl overflow-hidden";
                 div.innerHTML = `<img src="${t.url}" class="w-full h-32 object-cover">`;
-                div.onclick = () => {
-                    currentImage.src = t.url;
-                };
+                div.onclick = () => { currentImage.src = t.url; };
                 container.appendChild(div);
             });
+        }
+
+        function uploadImage(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                currentImage = new Image();
+                currentImage.src = ev.target.result;
+                currentImage.onload = drawMeme;
+            };
+            reader.readAsDataURL(file);
         }
 
         function drawMeme() {
             const canvas = document.getElementById('meme-canvas');
             const ctx = canvas.getContext('2d');
             
-            // Draw image
-            if (currentImage.complete && currentImage.src) {
+            if (currentImage.src) {
                 ctx.drawImage(currentImage, 0, 0, 600, 600);
-            } else if (templates[0]) {
-                currentImage.src = templates[0].url;
-                currentImage.onload = () => drawMeme();
-                return;
             }
 
-            // Draw text
             const top = document.getElementById('top-text').value.toUpperCase();
             const bottom = document.getElementById('bottom-text').value.toUpperCase();
 
             ctx.textAlign = 'center';
-            ctx.strokeStyle = '#000000';
-            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#000';
+            ctx.fillStyle = '#fff';
             ctx.lineWidth = 8;
-            ctx.lineJoin = 'round';
             ctx.font = 'bold 48px Impact';
 
-            // Top text
             ctx.strokeText(top, 300, 90);
             ctx.fillText(top, 300, 90);
-
-            // Bottom text
             ctx.strokeText(bottom, 300, 520);
             ctx.fillText(bottom, 300, 520);
         }
@@ -147,12 +156,10 @@
             link.click();
         }
 
-        // Auto update every 100ms when typing
-        setInterval(drawMeme, 100);
+        setInterval(drawMeme, 150);
 
         window.onload = () => {
             renderTemplates();
-            // Load first image
             currentImage.src = templates[0].url;
             currentImage.onload = drawMeme;
         };
